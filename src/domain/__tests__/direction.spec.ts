@@ -25,8 +25,8 @@ describe('Direction (domain)', () => {
   });
 
   it('should throw on invalid direction', () => {
-    expect(() => parseDirection('X' as any)).toThrow(InvalidInputError);
-    expect(() => parseDirection('X' as any)).toThrow(ERROR_MESSAGES.invalidDirection('X'));
+    expect(() => parseDirection('X')).toThrow(InvalidInputError);
+    expect(() => parseDirection('X')).toThrow(ERROR_MESSAGES.invalidDirection('X'));
   });
 });
 
