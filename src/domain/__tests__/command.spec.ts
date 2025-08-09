@@ -15,10 +15,13 @@ describe('Command (domain)', () => {
 
   it('should throw InvalidInputError for invalid characters', () => {
     expect(() => parseCommandChar('X')).toThrow(InvalidInputError);
-    expect(() => parseCommandChar('X')).toThrow(ERROR_MESSAGES.invalidCommand('X'));
+    expect(() => parseCommandChar('X')).toThrow(
+      ERROR_MESSAGES.invalidCommand('X'),
+    );
 
     expect(() => parseCommandChar('')).toThrow(InvalidInputError);
-    expect(() => parseCommandChar('')).toThrow(ERROR_MESSAGES.invalidCommand(''));
+    expect(() => parseCommandChar('')).toThrow(
+      ERROR_MESSAGES.invalidCommand(''),
+    );
   });
 });
-

@@ -1,5 +1,5 @@
-import { InvalidInputError } from "../common/errors/invalid-input.error";
-import { ERROR_MESSAGES } from "../common/errors/messages";
+import { InvalidInputError } from '../common/errors/invalid-input.error';
+import { ERROR_MESSAGES } from '../common/errors/messages';
 
 export enum Command {
   Left = 0,

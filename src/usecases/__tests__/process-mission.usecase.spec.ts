@@ -21,4 +21,3 @@ describe('ProcessMissionUseCase', () => {
     expect(() => uc.run(input)).toThrow(InvalidInputError);
   });
 });
-

@@ -8,6 +8,6 @@ async function bootstrap() {
   const logger = app.get(AppLogger);
   app.useGlobalInterceptors(new LoggingInterceptor(logger));
   app.useLogger(logger);
-  await app.listen(3000);
+  await app.listen(3002);
 }
 bootstrap();

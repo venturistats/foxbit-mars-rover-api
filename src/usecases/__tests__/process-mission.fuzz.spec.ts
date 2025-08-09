@@ -1,6 +1,5 @@
 import fc from 'fast-check';
 import { ProcessMissionUseCase } from '../process-mission.usecase';
-import { ERROR_MESSAGES } from '../../common/errors/messages';
 
 // Helpers to build random yet valid mission strings
 const dirCharArb = fc.constantFrom('N', 'E', 'S', 'W');
@@ -9,33 +8,44 @@ const cmdCharArb = fc.constantFrom('L', 'R', 'M');
 // Not used directly in newer fast-check APIs without .sample()
 // const whitespaceArb = fc.constantFrom('', ' ', '  ', '\t');
 
-const plateauArb = fc.tuple(fc.integer({ min: 0, max: 20 }), fc.integer({ min: 0, max: 20 })).map(([x, y]) => `${x} ${y}`);
+const plateauArb = fc
+  .tuple(fc.integer({ min: 0, max: 20 }), fc.integer({ min: 0, max: 20 }))
+  .map(([x, y]) => `${x} ${y}`);
 
-const roverPosArb = fc.record({
-  x: fc.integer({ min: 0, max: 20 }),
-  y: fc.integer({ min: 0, max: 20 }),
-  d: dirCharArb,
-}).map(({ x, y, d }) => `${x} ${y} ${d}`);
+const roverPosArb = fc
+  .record({
+    x: fc.integer({ min: 0, max: 20 }),
+    y: fc.integer({ min: 0, max: 20 }),
+    d: dirCharArb,
+  })
+  .map(({ x, y, d }) => `${x} ${y} ${d}`);
 
-const commandsArb = fc.array(cmdCharArb, { minLength: 0, maxLength: 30 }).map(cs => cs.join(''));
+const commandsArb = fc
+  .array(cmdCharArb, { minLength: 0, maxLength: 30 })
+  .map((cs) => cs.join(''));
 
-const validMissionArb = fc.record({
-  plateau: plateauArb,
-  rovers: fc.array(fc.record({ pos: roverPosArb, cmds: commandsArb }), { minLength: 1, maxLength: 5 }),
-}).map(({ plateau, rovers }) => {
-  const lines: string[] = [plateau];
-  for (const { pos, cmds } of rovers) {
-    lines.push(pos);
-    lines.push(cmds);
-  }
-  return lines.join('\n');
-});
+const validMissionArb = fc
+  .record({
+    plateau: plateauArb,
+    rovers: fc.array(fc.record({ pos: roverPosArb, cmds: commandsArb }), {
+      minLength: 1,
+      maxLength: 5,
+    }),
+  })
+  .map(({ plateau, rovers }) => {
+    const lines: string[] = [plateau];
+    for (const { pos, cmds } of rovers) {
+      lines.push(pos);
+      lines.push(cmds);
+    }
+    return lines.join('\n');
+  });
 
 describe('ProcessMissionUseCase (fuzz)', () => {
   it('does not throw for syntactically valid missions (limited runs)', () => {
     const uc = new ProcessMissionUseCase();
     fc.assert(
-      fc.property(validMissionArb, input => {
+      fc.property(validMissionArb, (input) => {
         // Should either return a string result or throw InvalidInput when moving out of bounds.
         // We only assert it never throws unexpected errors.
         try {
@@ -71,4 +81,3 @@ describe('ProcessMissionUseCase (fuzz)', () => {
     );
   });
 });
-

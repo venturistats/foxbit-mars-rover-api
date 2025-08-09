@@ -4,4 +4,3 @@ export class InvalidInputError extends Error {
     this.name = 'InvalidInputError';
   }
 }
-

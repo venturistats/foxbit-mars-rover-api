@@ -3,15 +3,17 @@ import { LoggingInterceptor } from '../logging/logging.interceptor';
 import { AppLogger } from '../logging/app-logger.service';
 
 describe('LoggingInterceptor', () => {
-  const makeContext = (method = 'GET', url = '/test') => ({
-    switchToHttp: () => ({
-      getRequest: () => ({ method, url }),
-    }),
-  }) as any;
+  const makeContext = (method = 'GET', url = '/test') =>
+    ({
+      switchToHttp: () => ({
+        getRequest: () => ({ method, url }),
+      }),
+    }) as any;
 
-  const makeNext = (obsFactory: () => any) => ({
-    handle: () => obsFactory(),
-  }) as any;
+  const makeNext = (obsFactory: () => any) =>
+    ({
+      handle: () => obsFactory(),
+    }) as any;
 
   let logger: AppLogger;
   let logSpy: jest.SpyInstance;
@@ -27,7 +29,7 @@ describe('LoggingInterceptor', () => {
     jest.restoreAllMocks();
   });
 
-  it('logs incoming and completion when next succeeds', done => {
+  it('logs incoming and completion when next succeeds', (done) => {
     const interceptor = new LoggingInterceptor(logger);
     const context = makeContext('POST', '/ok');
     const next = makeNext(() => of('ok'));
@@ -39,11 +41,11 @@ describe('LoggingInterceptor', () => {
         expect(logSpy).toHaveBeenCalledTimes(2);
         done();
       },
-      error: err => done(err),
+      error: (err) => done(err),
     });
   });
 
-  it('logs incoming and error when next errors', done => {
+  it('logs incoming and error when next errors', (done) => {
     const interceptor = new LoggingInterceptor(logger);
     const context = makeContext('GET', '/fail');
     const next = makeNext(() => throwError(() => new Error('boom')));
@@ -58,4 +60,3 @@ describe('LoggingInterceptor', () => {
     });
   });
 });
-

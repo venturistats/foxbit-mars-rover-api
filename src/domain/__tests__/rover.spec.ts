@@ -28,7 +28,8 @@ describe('Rover (domain)', () => {
     const p = new Plateau(0, 0);
     const r = new Rover(0, 0, 'N');
     expect(() => r.move(p)).toThrow(InvalidInputError);
-    expect(() => r.move(p)).toThrow(ERROR_MESSAGES.movementWouldLeavePlateau(0, 1));
+    expect(() => r.move(p)).toThrow(
+      ERROR_MESSAGES.movementWouldLeavePlateau(0, 1),
+    );
   });
 });
-

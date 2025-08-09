@@ -39,7 +39,13 @@ export class AppLogger implements LoggerService {
     this.print('verbose', message, undefined, context);
   }
 
-  private print(level: LogLevel, message: any, trace?: string, explicitContext?: string, meta?: Record<string, unknown>) {
+  private print(
+    level: LogLevel,
+    message: any,
+    trace?: string,
+    explicitContext?: string,
+    meta?: Record<string, unknown>,
+  ) {
     const record: LogRecord = {
       level,
       timestamp: new Date().toISOString(),
@@ -52,4 +58,3 @@ export class AppLogger implements LoggerService {
     console.log(JSON.stringify(record));
   }
 }
-

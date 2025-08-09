@@ -4,7 +4,11 @@ import { Plateau } from './plateau';
 import { ERROR_MESSAGES } from '../common/errors/messages';
 
 export class Rover {
-  constructor(public x: number, public y: number, public dir: Direction) {}
+  constructor(
+    public x: number,
+    public y: number,
+    public dir: Direction,
+  ) {}
 
   turnLeft(): void {
     this.dir = rotateLeft(this.dir);
@@ -33,7 +37,9 @@ export class Rover {
     }
 
     if (!plateau.isInside(nx, ny)) {
-      throw new InvalidInputError(ERROR_MESSAGES.movementWouldLeavePlateau(nx, ny));
+      throw new InvalidInputError(
+        ERROR_MESSAGES.movementWouldLeavePlateau(nx, ny),
+      );
     }
 
     this.x = nx;

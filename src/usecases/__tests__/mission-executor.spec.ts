@@ -32,7 +32,9 @@ describe('executeMission', () => {
     const invalid = 999 as unknown as Command;
     const commands: Command[] = [Command.Move, invalid];
 
-    expect(() => executeMission(plateau, rover, commands)).toThrow(InvalidInputError);
+    expect(() => executeMission(plateau, rover, commands)).toThrow(
+      InvalidInputError,
+    );
   });
 
   it('throws when a move would leave the plateau', () => {
@@ -40,7 +42,9 @@ describe('executeMission', () => {
     const rover = new Rover(0, 0, 'S' as Direction);
     const commands: Command[] = [Command.Move];
 
-    expect(() => executeMission(plateau, rover, commands)).toThrow(InvalidInputError);
+    expect(() => executeMission(plateau, rover, commands)).toThrow(
+      InvalidInputError,
+    );
   });
 
   it('does nothing when command list is empty', () => {
@@ -53,4 +57,3 @@ describe('executeMission', () => {
     expect(rover.toString()).toBe('2 2 E');
   });
 });
-

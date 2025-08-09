@@ -21,4 +21,3 @@ describe('Plateau (domain)', () => {
     expect(() => new Plateau(NaN as any, 1)).toThrow(InvalidInputError);
   });
 });
-

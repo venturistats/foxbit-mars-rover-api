@@ -1,4 +1,9 @@
-import { CallHandler, ExecutionContext, Injectable, NestInterceptor } from '@nestjs/common';
+import {
+  CallHandler,
+  ExecutionContext,
+  Injectable,
+  NestInterceptor,
+} from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { AppLogger } from './app-logger.service';
@@ -21,10 +26,12 @@ export class LoggingInterceptor implements NestInterceptor {
         },
         error: (err: unknown) => {
           const ms = Date.now() - start;
-          this.logger.error(`request_error ${method} ${url} ${ms}ms`, err instanceof Error ? err.stack : undefined);
+          this.logger.error(
+            `request_error ${method} ${url} ${ms}ms`,
+            err instanceof Error ? err.stack : undefined,
+          );
         },
       }),
     );
   }
 }
-

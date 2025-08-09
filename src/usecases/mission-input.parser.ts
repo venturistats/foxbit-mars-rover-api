@@ -13,7 +13,7 @@ export interface ParsedMission {
 export function parseMissionInput(input: string): ParsedMission {
   const lines = input
     .split(/\r?\n/)
-    .map(l => l.trim())
+    .map((l) => l.trim())
     .filter(Boolean);
 
   if (lines.length < 3) {
@@ -22,11 +22,13 @@ export function parseMissionInput(input: string): ParsedMission {
 
   const [plateauLine, ...rest] = lines;
   const plateauParts = plateauLine.split(/\s+/);
-  if (plateauParts.length !== 2) throw new InvalidInputError(ERROR_MESSAGES.plateauLineInvalid);
+  if (plateauParts.length !== 2)
+    throw new InvalidInputError(ERROR_MESSAGES.plateauLineInvalid);
 
   const maxX = Number(plateauParts[0]);
   const maxY = Number(plateauParts[1]);
-  if (Number.isNaN(maxX) || Number.isNaN(maxY)) throw new InvalidInputError(ERROR_MESSAGES.plateauCoordsInvalid);
+  if (Number.isNaN(maxX) || Number.isNaN(maxY))
+    throw new InvalidInputError(ERROR_MESSAGES.plateauCoordsInvalid);
 
   const plateau = new Plateau(maxX, maxY);
 
@@ -38,23 +40,27 @@ export function parseMissionInput(input: string): ParsedMission {
     if (!posLine) throw new InvalidInputError(ERROR_MESSAGES.entryTruncated);
 
     const parts = posLine.split(/\s+/);
-    if (parts.length !== 3) throw new InvalidInputError(ERROR_MESSAGES.roverPositionInvalid(posLine));
+    if (parts.length !== 3)
+      throw new InvalidInputError(ERROR_MESSAGES.roverPositionInvalid(posLine));
 
     const x = Number(parts[0]);
     const y = Number(parts[1]);
-    if (Number.isNaN(x) || Number.isNaN(y)) throw new InvalidInputError(ERROR_MESSAGES.roverCoordsInvalid);
+    if (Number.isNaN(x) || Number.isNaN(y))
+      throw new InvalidInputError(ERROR_MESSAGES.roverCoordsInvalid);
 
     const dir: Direction = parseDirection(parts[2]);
     const rover = new Rover(x, y, dir);
     if (!plateau.isInside(rover.x, rover.y)) {
-      throw new InvalidInputError(ERROR_MESSAGES.roverInitOutside(rover.x, rover.y));
+      throw new InvalidInputError(
+        ERROR_MESSAGES.roverInitOutside(rover.x, rover.y),
+      );
     }
 
-    if (!commandsLine) throw new InvalidInputError(ERROR_MESSAGES.missingCommands);
+    if (!commandsLine)
+      throw new InvalidInputError(ERROR_MESSAGES.missingCommands);
     const commands = [...commandsLine.trim()].map(parseCommandChar);
     rovers.push({ rover, commands });
   }
 
   return { plateau, rovers };
 }
-
