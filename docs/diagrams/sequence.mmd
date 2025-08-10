@@ -1,0 +1,29 @@
+sequenceDiagram
+  participant C as Client
+  participant Ctrl as MissionController
+  participant Svc as MissionService
+  participant UC as ProcessMissionUseCase
+  participant Parser as parseMissionInput
+  participant Exec as executeMission
+  participant Rover as Rover
+  participant Filter as DomainExceptionFilter
+
+  C->>Ctrl: POST /mission/run (file)
+  Ctrl->>Svc: runFromText(input)
+  Svc->>UC: run(input)
+  UC->>Parser: parse(input)
+  Parser-->>UC: plateau, rovers+commands
+  loop each rover
+    UC->>Exec: execute(plateau, rover, cmds)
+    Exec->>Rover: turn/move
+    alt invalid move
+      Rover-->>Exec: InvalidInputError
+      Exec-->>UC: error
+      UC-->>Ctrl: error
+      Ctrl-->>Filter: handle
+    end
+  end
+  UC-->>Svc: positions string
+  Svc-->>Ctrl: result
+  Ctrl-->>C: { result }
+

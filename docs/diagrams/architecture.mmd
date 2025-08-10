@@ -1,0 +1,32 @@
+flowchart LR
+  subgraph Mission_HTTP
+    Controller[MissionController]
+    Service[MissionService]
+  end
+  subgraph UseCases
+    UC[ProcessMissionUseCase]
+    Parser[parseMissionInput]
+    Exec[executeMission]
+  end
+  subgraph Domain
+    Plateau[Plateau]
+    Rover[Rover]
+    Command[Command]
+    Direction[Direction]
+  end
+  subgraph Common
+    Filter[DomainExceptionFilter]
+    Logger[LoggingInterceptor + AppLogger]
+    Err[InvalidInputError]
+  end
+
+  Controller --> Service --> UC
+  UC --> Parser --> Plateau
+  Parser --> Rover
+  Parser --> Command
+  Parser --> Direction
+  UC --> Exec --> Rover
+  Exec --> Err
+  Err --> Filter
+  Controller -- logs --> Logger
+
