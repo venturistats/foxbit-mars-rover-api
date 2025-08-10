@@ -97,6 +97,49 @@ sequenceDiagram
   Ctrl-->>C: { result }
 ```
 
+#### 🚀 Pipeline de CI/CD
+Este diagrama mostra o fluxo completo de Integração Contínua:
+
+```mermaid
+flowchart TD
+    subgraph "Developer Workflow"
+        A[Desenvolvedor faz alterações] --> B[git add .]
+        B --> C[git commit -m 'feat: nova funcionalidade']
+        C --> D[git push origin main]
+    end
+
+    subgraph "GitHub Actions CI"
+        E[Trigger: push/PR para main] --> F[Checkout código]
+        F --> G[Setup Node.js 20 + Yarn cache]
+        G --> H[Instalar dependências]
+        H --> I[Build do projeto]
+        I --> J[Executar testes com cobertura]
+        
+        J --> K{Testes passaram?}
+        K -->|✅ Sim| L[Build e testes OK]
+        K -->|❌ Não| M[❌ CI falhou]
+        
+        L --> N[✅ CI passou]
+    end
+
+    subgraph "Code Quality Tools"
+        O[Commitizen] --> P[Conventional Commits]
+        Q[ESLint + Prettier] --> R[Padrões de código]
+        S[Husky] --> T[Git hooks]
+    end
+
+    subgraph "Quality Gates"
+        U[Cobertura mínima: 88%] --> V[Linting passa]
+        V --> W[Build compila]
+        W --> X[Testes passam]
+    end
+
+    style A fill:#e1f5fe
+    style N fill:#c8e6c9
+    style M fill:#ffcdd2
+    style U fill:#fff3e0
+```
+
 ### Camadas da Arquitetura
 
 1. **Domain Layer** (`src/domain/`)
@@ -201,6 +244,79 @@ yarn test:e2e
 # Testes com debug
 yarn test:debug
 ```
+
+## 🚀 CI/CD Pipeline
+
+### 🔄 Pipeline de Integração Contínua
+O projeto utiliza **GitHub Actions** para automatizar o processo de build, teste e validação de qualidade de código.
+
+#### 📋 Fluxo do CI
+```mermaid
+flowchart TD
+    subgraph "Developer Workflow"
+        A[Desenvolvedor faz alterações] --> B[git add .]
+        B --> C[git commit -m 'feat: nova funcionalidade']
+        C --> D[git push origin main]
+    end
+
+    subgraph "GitHub Actions CI"
+        E[Trigger: push/PR para main] --> F[Checkout código]
+        F --> G[Setup Node.js 20 + Yarn cache]
+        G --> H[Instalar dependências]
+        H --> I[Build do projeto]
+        I --> J[Executar testes com cobertura]
+        
+        J --> K{Testes passaram?}
+        K -->|✅ Sim| L[Build e testes OK]
+        K -->|❌ Não| M[❌ CI falhou]
+        
+        L --> N[✅ CI passou]
+    end
+
+    subgraph "Code Quality Tools"
+        O[Commitizen] --> P[Conventional Commits]
+        Q[ESLint + Prettier] --> R[Padrões de código]
+        S[Husky] --> T[Git hooks]
+    end
+
+    subgraph "Quality Gates"
+        U[Cobertura mínima: 88%] --> V[Linting passa]
+        V --> W[Build compila]
+        W --> X[Testes passam]
+    end
+
+    style A fill:#e1f5fe
+    style N fill:#c8e6c9
+    style M fill:#ffcdd2
+    style U fill:#fff3e0
+```
+
+### 🛠️ Ferramentas de Qualidade
+
+#### **GitHub Actions**
+- **Trigger**: Executa em push para `main` e Pull Requests
+- **Runtime**: Ubuntu Latest
+- **Node.js**: Versão 20
+- **Cache**: Yarn dependencies para otimização
+
+#### **Code Quality**
+- **ESLint**: Linting de código TypeScript
+- **Prettier**: Formatação automática de código
+- **Husky**: Git hooks para validação pré-commit
+- **Commitizen**: Padrões de commit convencionais
+
+#### **Quality Gates**
+- ✅ **Build**: Projeto deve compilar sem erros
+- ✅ **Linting**: Código deve passar nas regras do ESLint
+- ✅ **Testes**: Todos os testes devem passar
+- ✅ **Cobertura**: Mínimo de 88% de cobertura
+
+### 📁 Arquivos de Configuração
+- `.github/workflows/ci.yml` - Pipeline do GitHub Actions
+- `.eslintrc.js` - Regras do ESLint
+- `.prettierrc` - Configuração do Prettier
+- `commitlint.config.js` - Validação de commits
+- `.husky/` - Git hooks de qualidade
 
 ## 🚀 Como Executar
 

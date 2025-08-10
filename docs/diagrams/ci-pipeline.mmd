@@ -1,0 +1,37 @@
+flowchart TD
+    subgraph "Developer Workflow"
+        A[Desenvolvedor faz alterações] --> B[git add .]
+        B --> C[git commit -m 'feat: nova funcionalidade']
+        C --> D[git push origin main]
+    end
+
+    subgraph "GitHub Actions CI"
+        E[Trigger: push/PR para main] --> F[Checkout código]
+        F --> G[Setup Node.js 20 + Yarn cache]
+        G --> H[Instalar dependências]
+        H --> I[Build do projeto]
+        I --> J[Executar testes com cobertura]
+        
+        J --> K{Testes passaram?}
+        K -->|✅ Sim| L[Build e testes OK]
+        K -->|❌ Não| M[❌ CI falhou]
+        
+        L --> N[✅ CI passou]
+    end
+
+    subgraph "Code Quality Tools"
+        O[Commitizen] --> P[Conventional Commits]
+        Q[ESLint + Prettier] --> R[Padrões de código]
+        S[Husky] --> T[Git hooks]
+    end
+
+    subgraph "Quality Gates"
+        U[Cobertura mínima: 88%] --> V[Linting passa]
+        V --> W[Build compila]
+        W --> X[Testes passam]
+    end
+
+    style A fill:#e1f5fe
+    style N fill:#c8e6c9
+    style M fill:#ffcdd2
+    style U fill:#fff3e0 

@@ -21,6 +21,14 @@ Este diagrama mostra o fluxo de execução de uma missão, desde a requisição 
 - Tratamento de erros
 - Retorno dos resultados
 
+### 3. Pipeline de CI/CD (`ci-pipeline.mmd`)
+Este diagrama ilustra o fluxo completo de Integração Contínua:
+
+- Workflow do desenvolvedor
+- Pipeline do GitHub Actions
+- Ferramentas de qualidade de código
+- Gates de qualidade e validação
+
 ## 🔍 Como Visualizar os Diagramas
 
 ### Opção 1: GitHub (Recomendado)
